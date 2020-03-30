@@ -1,0 +1,48 @@
+
+.container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.innerContainer{
+    width: 60%;
+    margin-top: 10rem;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+
+}
+
+.header{
+    font-size: 2.5rem;
+    margin: 3rem;
+    text-align: center;
+}
+
+.message{
+    font-size: 1.6rem;
+    margin: 1rem;
+
+}
+
+.home{
+    margin-top: 3rem;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border:1px solid black;
+    border-radius: 3px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: black;
+    cursor: pointer;
+    margin-bottom: 5rem;
+}
+
+.home:hover{
+    background: black;
+    color: white;
+}

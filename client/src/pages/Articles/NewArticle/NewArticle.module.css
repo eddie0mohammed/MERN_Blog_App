@@ -1,0 +1,61 @@
+
+.newArticle{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    
+}
+
+.form{
+    margin-top: 10rem;
+    width: 70%;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading{
+    font-size: 3rem;
+    margin: 4rem 0;
+
+}
+
+.input{
+    width: 90%;
+    padding:1rem;
+    font-size: 1.6rem;
+}
+
+.textarea{
+    width: 90%;
+    margin-top: 2rem;
+    height: 30rem;
+    resize: none;
+    padding: 1rem;
+    font-size: 1.6rem;
+    border: 1px solid lightgray;
+}
+
+.submit{
+    width: 90%;
+    margin: 2rem 0;
+    background: green;
+    color: white;
+    padding: 1rem 0;
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin-bottom: 4rem;
+}
+
+.submit:hover{
+    font-weight: 600;
+}
+
+.file{
+    display: flex;
+    margin: 3rem 0 1rem 0;
+    font-size: 2rem;
+    width: 80%;
+    
+}

@@ -1,0 +1,69 @@
+
+.viewArticle{
+    width: 100%;
+    padding: 5rem;
+}
+
+.article{
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.title{
+    font-size: 3rem;
+    margin: 3rem;
+}
+
+.image{
+    width: 50rem;
+    height: 30rem;
+    margin: 3rem;
+}
+
+.paragraph{
+    font-size: 1.8rem;
+    padding: 0 5rem;
+    line-height: 2.5rem;
+}
+
+.btns{
+    margin-top: 5rem;
+    display: flex;
+    justify-content:center;
+}
+
+.btn{
+    margin: 2rem;
+    width: 10rem;
+    text-align:center;
+    font-weight: 600;
+    font-size: 2rem;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+
+}
+
+.edit{
+    color:white;
+    background: darkblue;
+    border:1px solid darkblue;
+}
+
+.edit:hover{
+    color: darkblue;
+    background: white;
+}
+
+.delete{
+    color:white;
+    background: red;
+    border:1px solid red;
+}
+
+.delete:hover{
+    color: red;
+    background: white;
+}

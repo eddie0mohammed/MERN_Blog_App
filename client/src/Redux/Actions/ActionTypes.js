@@ -1,0 +1,34 @@
+
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const RESET_REGISTERED_STATUS = "RESET_REGISTERED_STATUS";
+
+export const LOGIN_ERROR = "LOGIN_ERROR";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+
+export const LOGOUT = 'LOGOUT';
+
+
+export const GET_USER = "GET_USER";
+export const GET_USER_FAIL = "GET_USER_FAIL";
+
+export const ERR = 'ERR';
+export const ERROR_IMG = "ERROR_IMG";
+
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const RESET_FORGOT_STATUS = "RESET_FORGOT_STATUS";
+
+export const RESET_PASSWORD_CHANGED_STATUS = "RESET_PASSWORD_CHANGED_STATUS";
+export const PASSWORD_CHANGED = "PASSWORD_CHANGED";
+
+
+
+export const ADD_ARTICLE = "ADD_ARTICLE";
+export const DELETE_ARTICLE = 'DELETE_ARTICLE';
+export const EDIT_ARTICLE = "EDIT_ARTICLE";
+
+export const UPDATE_ARTICLE = "UPDATE_ARTICLE";
+
+export const GET_ARTICLES = "GET_ARTICLES";
