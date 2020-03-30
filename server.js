@@ -46,13 +46,22 @@ app.use(bodyParser.json());
 //Serve Static File
 app.use('/images' , express.static(path.join(__dirname, 'public', 'images')));
 
+if (process.env.NODE_ENV === 'production'){
+    
+    app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    })
+}
+
 //ROUTES
 app.use('/auth', authRouter);
 app.use('/articles', articlesRouter);
 
 
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log('server listening on port ', PORT);
 });
