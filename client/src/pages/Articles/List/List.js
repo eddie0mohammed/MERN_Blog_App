@@ -15,28 +15,32 @@ class List extends Component {
     // componentDidMount(){
     //     this.props.getArticles();
     // }
-
+    
 
     renderArticles = () => {
         return this.props.articles.length === 0 ? 
             <h1>No articles...</h1>
             :
             (this.props.articles.map(elem => {
+                const createdDate = new Date(elem.createdAt);
 
                 return (
                 <div key={elem._id} className={styles.block}>
 
                     <h1 className={styles.title}>{elem.title}</h1>
                     <div className={styles.innerBlock}>
-                        <p className={styles.desc}>{elem.article}</p>
+                        <div className={styles.text}>
+                            <p className={styles.desc}>{`${elem.article.slice(0, 200)}...`}</p>
+                            <p className={styles.details}>author - {createdDate.toLocaleString().split(',')[0]}</p>
+                            
+                        </div>
                         <div className={styles.imgContainer}>
                             <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
-
                         </div>
                     </div>
 
                     <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
-
+                    
                 </div>  
             )}))
             

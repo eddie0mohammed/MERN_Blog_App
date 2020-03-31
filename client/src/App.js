@@ -50,8 +50,8 @@ class App extends React.Component {
             <Route path="/auth/confirmEmail" exact component={SuccessRegistered}/>
             <Route path="/auth/confirmForgotPassword" exact component={ConfirmForgotPassword}/>
 
-            <Route path='/articles/new' exact render={() => (this.props.isAuthenticated ? <NewArticle /> : <Redirect to='/auth/login' />)} />
-            <Route path='/articles/edit/:articleId' exact render={() => (this.props.isAuthenticated ? <EditArticle /> : <Redirect to='/auth/login' />)}  />
+            <Route path='/articles/new' exact render={(props) => (this.props.isAuthenticated ? <NewArticle {...props}/> : <Redirect to='/auth/login' />)} />
+            <Route path='/articles/edit/:articleId' exact render={(props) => (this.props.isAuthenticated ? <EditArticle {...props}/> : <Redirect to='/auth/login' />)}  />
             <Route path='/articles/:articleId' exact component={ViewArticle} />
 
 

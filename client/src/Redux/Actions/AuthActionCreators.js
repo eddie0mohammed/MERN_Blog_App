@@ -104,7 +104,7 @@ export const getUser = (token) => async (dispatch) => {
 
         const res = await axios.get('/auth/user', config);
         // const res = await axios.get('http://localhost:8080/auth/user', config);
-        console.log(res.data);
+        // console.log(res.data);
         dispatch({
             type: actionTypes.GET_USER,
             payload: res.data

@@ -4,13 +4,14 @@ import axios from 'axios';
 import * as actionTypes from '../Actions/ActionTypes';
 
 
-export const addArticle = (title, article, file) => async (dispatch) => {
+export const addArticle = (title, article, file) => async (dispatch, getState) => {
 
     try{
 
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "auth-token": getState().auth.token
             }
         }
         // const body = JSON.stringify({title, article, imageURL});
@@ -44,12 +45,19 @@ export const addArticle = (title, article, file) => async (dispatch) => {
 
 }
 
-export const deleteArticle = (id) => async (dispatch) => {
+export const deleteArticle = (id) => async (dispatch, getState) => {
 
     try{
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                "auth-token": getState().auth.token
+            }
+        }
         
         await axios.delete(`/articles/${id}`);
-        // await axios.delete(`http://localhost:8080/articles/${id}`);
+        // await axios.delete(`http://localhost:8080/articles/${id}`, config);
 
         dispatch({
             type: actionTypes.DELETE_ARTICLE,
@@ -57,18 +65,19 @@ export const deleteArticle = (id) => async (dispatch) => {
         });
 
     }catch(err){
-        console.log(err);
+        console.log(err.response);
     }
     
 }
 
-export const updateArticle = (id, title, article, file) => async (dispatch) => {
+export const updateArticle = (id, title, article, file) => async (dispatch, getState) => {
 
     try{
 
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "auth-token": getState().auth.token
             }
         }
 

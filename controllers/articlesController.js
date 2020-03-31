@@ -75,7 +75,8 @@ const getArticles = async (req, res, next) => {
 
     try{
 
-        const articles = await Article.find();
+        const articles = await Article.find().select('_id imageURL title article createdAt').populate('author');
+        // const articles = await Article.find().populate('author').exec();
 
         res.status(200).json({
             status: 'success',

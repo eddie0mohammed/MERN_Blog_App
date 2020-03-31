@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 
 const checkAuth = (req, res, next) => {
 
-
     const token = req.header('auth-token');
+    // console.log(token);
     if (!token){
         return res.status(400).json({
             status: 'fail',
@@ -22,7 +22,7 @@ const checkAuth = (req, res, next) => {
         req.user = verified;
         
     }catch(err){
-        console.log(err);
+        console.log(err.response);
         res.status(401).json({
             status: "fail",
             error: err
