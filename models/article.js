@@ -18,7 +18,7 @@ const articleSchema = new mongoose.Schema({
         type: String,
         default: 'https://source.unsplash.com/random',
         // default: ''
-        // required: [true, 'Image is required']
+        required: [true, 'Image is required']
     },
 
     createdAt: {

@@ -9,7 +9,8 @@ const initialState = {
     isAuthenticated: localStorage.getItem('token') ? true : false,
     user: null,
     forgotPassword: false,
-    passwordChanged: false
+    passwordChanged: false,
+    myPasswordChanged: false
 
 
 }
@@ -80,6 +81,19 @@ const authReducer = (state = initialState, action) => {
                 token: null,
                 user: null
             }
+
+        case (actionTypes.RESET_MY_PASSWORD):
+            return {
+                ...state,
+                myPasswordChanged: true
+            }
+
+        case (actionTypes.RESET_MY_PASSWORD_STATUS):
+            return {
+                ...state,
+                myPasswordChanged: false
+            }
+        
 
         default:
             return state

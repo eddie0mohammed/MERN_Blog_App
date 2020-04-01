@@ -15,8 +15,8 @@ export const register = (username, email, password) => async (dispatch) => {
 
         const body = {username, email, password};
 
-        // const res = await axios.post('http://localhost:8080/auth/register', body, config);
-        const res = await axios.post('/auth/register', body, config);
+        const res = await axios.post('http://localhost:8080/auth/register', body, config);
+        // const res = await axios.post('/auth/register', body, config);
         // console.log(res.data);
         
         dispatch({
@@ -58,8 +58,8 @@ export const login = (email, password) => async (dispatch) => {
 
         const body = {email, password};
 
-        // const res = await axios.post('http://localhost:8080/auth/login', body, config);
-        const res = await axios.post('/auth/login', body, config);
+        const res = await axios.post('http://localhost:8080/auth/login', body, config);
+        // const res = await axios.post('/auth/login', body, config);
         // console.log(res.data);
 
         dispatch({
@@ -102,8 +102,8 @@ export const getUser = (token) => async (dispatch) => {
             config.headers['auth-token'] = token;
         }
 
-        const res = await axios.get('/auth/user', config);
-        // const res = await axios.get('http://localhost:8080/auth/user', config);
+        // const res = await axios.get('/auth/user', config);
+        const res = await axios.get('http://localhost:8080/auth/user', config);
         // console.log(res.data);
         dispatch({
             type: actionTypes.GET_USER,
@@ -137,8 +137,8 @@ export const forgotPassword = (email) => async (dispatch) => {
 
         const body = JSON.stringify({email: email});
 
-        // const res = await axios.post('http://localhost:8080/auth/forgotPassword', body, config);
-        const res = await axios.post('/auth/forgotPassword', body, config);
+        const res = await axios.post('http://localhost:8080/auth/forgotPassword', body, config);
+        // const res = await axios.post('/auth/forgotPassword', body, config);
 
         dispatch({
             type: actionTypes.FORGOT_PASSWORD,
@@ -179,8 +179,8 @@ export const resetPassword = (password, token) => async (dispatch) => {
          //body
          const body = JSON.stringify({password: password});
 
-        // const res = await axios.post(`http://localhost:8080/auth/resetPassword/${token}`, body, config);
-        const res = await axios.post(`/auth/resetPassword/${token}`, body, config);
+        const res = await axios.post(`http://localhost:8080/auth/resetPassword/${token}`, body, config);
+        // const res = await axios.post(`/auth/resetPassword/${token}`, body, config);
         
         dispatch({
             type: actionTypes.PASSWORD_CHANGED,
@@ -197,5 +197,51 @@ export const resetPassword = (password, token) => async (dispatch) => {
 export const resetPasswordChangedStatus = () => {
     return {
         type: actionTypes.RESET_PASSWORD_CHANGED_STATUS
+    }
+}
+
+
+export const resetMyPassword = (currentPassword, newPassword) => async (dispatch, getState) => {
+
+    try{
+        //headers
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": getState().auth.token
+            }
+        }
+
+         //body
+         const body = JSON.stringify({currentPassword: currentPassword, newPassword: newPassword});
+
+         const res = await axios.post(`http://localhost:8080/auth/resetMyPassword`, body, config);
+        //  console.log(res.data);
+        
+         dispatch({
+             type: actionTypes.RESET_MY_PASSWORD
+         });
+
+
+
+    }catch(err){
+        console.log(err);
+        dispatch({
+            type: actionTypes.ERR
+        });
+        setTimeout(() => {
+            dispatch({
+                type: actionTypes.CLEAR_ERRORS
+            });
+        }, 3000);
+
+    }
+
+    
+}
+
+export const resetMyPasswordStatus = () => {
+    return {
+        type: actionTypes.RESET_MY_PASSWORD_STATUS
     }
 }

@@ -12,17 +12,22 @@ class ViewArticle extends Component {
         title: '',
         article: '',
         imageURL: '',
-        id: ''
+        id: '',
+        author: '',
+        authorId: ''
     }
 
     componentDidMount(){
         const id = this.props.match.params.articleId;
         const currentArticle = this.props.articles.filter(elem => elem._id === id)[0];
+        // console.log(currentArticle.author);
         this.setState({
             title: currentArticle.title,
             article: currentArticle.article,
             imageURL: currentArticle.imageURL,
-            id: id
+            id: id,
+            author: currentArticle.author.username,
+            authorId: currentArticle.author._id
         });
     }
 
@@ -33,6 +38,7 @@ class ViewArticle extends Component {
     }
 
     render() {
+        
         return (
             
             <div className={styles.viewArticle}>
@@ -42,13 +48,14 @@ class ViewArticle extends Component {
 
                     <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
 
+                    <p className={styles.paragraph}>{this.state.author}</p>
                     <p className={styles.paragraph}>
                         {this.state.article}
                     </p>
 
                 </div>
 
-                {this.props.isAuthenticated ?
+                {this.props.isAuthenticated && this.props.user._id === this.state.authorId ?
                     <div className={styles.btns}>
                         <div className={`${styles.btn} ${styles.edit}`} onClick={() => this.props.history.push(`/articles/edit/${this.state.id}`)}>Edit</div>
                         <div className={`${styles.btn} ${styles.delete}`} onClick={this.handleDelete}>Delete</div>
@@ -64,7 +71,8 @@ class ViewArticle extends Component {
 const mapStateToProps = (state) => {
     return {
         articles: state.article.articles,
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        user: state.auth.user
     }
 }
 

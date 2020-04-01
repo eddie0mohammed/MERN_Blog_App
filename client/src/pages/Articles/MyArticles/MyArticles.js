@@ -1,27 +1,34 @@
-import React, { Component } from 'react';
-
-import styles from './List.module.css';
+import React, { Component } from 'react'
 
 import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
 
-// import * as articlesActionCreators from '../../../Redux/Actions/ArticlesActionCreators';
+import styles from './MyArticles.module.css';
 
+class MyArticles extends Component {
 
-
-
-class List extends Component {
+    // state = {
+    //     articles: []
+    // }
 
     // componentDidMount(){
-    //     this.props.getArticles();
+
+    //     this.setState({
+    //         articles: this.props.articles
+    //     })
+
     // }
-    
+
+    filterArticles = (arr) => {
+        return arr.filter(elem => {
+           return elem.author._id === this.props.currentUser._id
+        });
+    }
 
     renderArticles = () => {
         return this.props.articles.length === 0 ? 
             <h1>No articles...</h1>
             :
-            (this.props.articles.map(elem => {
+            (this.filterArticles(this.props.articles).map(elem => {
                 const createdDate = new Date(elem.createdAt);
 
                 return (
@@ -43,14 +50,14 @@ class List extends Component {
                     
                 </div>  
             )}))
-            
-
     }
 
+
     render() {
+        
         return (
             <div className={styles.list}>
-
+                <h1 className={styles.header}>My Articles</h1>
                 {this.renderArticles()}
                 
             </div>
@@ -61,13 +68,14 @@ class List extends Component {
 const mapStateToProps = (state) => {
     return {
         articles: state.article.articles,
+        currentUser: state.auth.user
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // getArticles: () => dispatch(articlesActionCreators.getArticles()),
+
     }
 }
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(List));
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(MyArticles);

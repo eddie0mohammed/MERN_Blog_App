@@ -322,6 +322,54 @@ const resetPassword = async (req, res, next) => {
 
 }
 
+const resetMyPassword = async (req, res, next) => {
+
+    try{
+        // 1. find user by id from token
+        const user = await User.findById(req.user.id);
+        if (!user){
+            return res.status(400).json({
+                status: 'fail',
+                error: "No user found"
+            });
+        }
+
+        // 2. check if current password provided matches the one in db
+        const isMatch = await bcrypt.compare(req.body.currentPassword, user.password);
+        if (!isMatch){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Current Password Invalid'
+            });
+        }
+
+        // 3. create new hashed password
+        //hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                user: user
+            }
+        })
+
+
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+    }
+
+}
+
 
 
 module.exports = {
@@ -332,4 +380,5 @@ module.exports = {
     forgotPassword: forgotPassword,
     redirectToResetPassword: redirectToResetPassword,
     resetPassword: resetPassword,
+    resetMyPassword: resetMyPassword
 }

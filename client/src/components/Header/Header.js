@@ -28,7 +28,9 @@ class Header extends Component {
                         </>
                         :
                         <>
+                        <div className={styles.btn} onClick={() => this.props.history.push('/articles/myArticles')}>MyArticles</div>
                         <div className={styles.btn} onClick={() => this.props.history.push('/articles/new')}>New</div>
+                        <div className={styles.btn} onClick={() => this.props.history.push('/auth/settings')}>Settings</div>
                         <div className={styles.btn} onClick={() => this.props.logout()}>Logout</div>
                         
                         {this.props.user ? 

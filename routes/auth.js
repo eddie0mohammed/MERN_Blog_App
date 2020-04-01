@@ -51,6 +51,12 @@ router.get('/resetPassword/:token', authController.redirectToResetPassword);
 router.post('/resetPassword/:token', authController.resetPassword);
 
 
+// @path    POST /auth/resetMyPassword
+// @desc    reset My Password
+// @access  Private
+router.post('/resetMyPassword', checkAuth, authController.resetMyPassword);
+
+
 
 
 

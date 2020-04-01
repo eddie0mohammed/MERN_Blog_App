@@ -33,29 +33,32 @@ const createArticle = async (req, res, next) => {
         });
     }
 
+    // console.log(req.user);
+
     const newArticle = new Article({
         title: req.body.title,
-        article: req.body.article
+        article: req.body.article,
+        author: req.user.id
     });
 
     if (req.file){
         newArticle.imageURL = req.file.filename;
+    }else{
+        return res.status(400).json({
+            status: 'fail',
+            error: 'Image is required'
+        });
     }
-    // else{
-    //     return res.status(400).json({
-    //         status: 'fail',
-    //         error: 'Image is required'
-    //     });
-    // }
 
     try{
 
-        await newArticle.save();
+        const temp = await newArticle.save();
+        const newlySavedArticle = await Article.findById(temp._id).populate('author');
         res.status(201).json({
             status: 'success',
             message: 'New article created',
             data: {
-                article: newArticle
+                article: newlySavedArticle
             }
         });
 
@@ -75,8 +78,8 @@ const getArticles = async (req, res, next) => {
 
     try{
 
-        const articles = await Article.find().select('_id imageURL title article createdAt').populate('author');
-        // const articles = await Article.find().populate('author').exec();
+        // const articles = await Article.find().select('_id imageURL title article createdAt').populate('author');
+        const articles = await Article.find().populate('author');
 
         res.status(200).json({
             status: 'success',
@@ -97,10 +100,19 @@ const getArticles = async (req, res, next) => {
 
 
 const deleteArticle = async (req, res, next) => {
-
     try{
-
+        
         const id = req.params.articleId;
+        const article = await Article.findById(id).populate('author');
+        // console.log(article.author._id);
+        // console.log(req.user.id);
+        if (req.user.id != article.author._id){
+            return res.status(401).json({
+                status: 'fail',
+                error: 'Unauthorized'
+            });
+        } 
+
         await Article.findByIdAndDelete(id);
 
         res.status(200).json({

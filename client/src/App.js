@@ -12,10 +12,14 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import ResetPassword from './pages/ResetPassword/ResetPassword';
 import SuccessRegistered from './pages/SuccessRegistered/SuccessRegistered';
 import ConfirmForgotPassword from './pages/ConfirmForgotPassword/Confirm';
+import Settings from './pages/Settings/Settings';
+import ResetMyPassword from './pages/ResetMyPassword/ResetMyPassword';
 
 import NewArticle from './pages/Articles/NewArticle/NewArticle';
 import EditArticle from './pages/Articles/EditArticle/EditArticle';
 import ViewArticle from './pages/Articles/ViewArticle/ViewArticle';
+import MyArticles from './pages/Articles/MyArticles/MyArticles';
+
 
 
 
@@ -24,8 +28,8 @@ import * as articlesActionCreators from './Redux/Actions/ArticlesActionCreators'
 
 class App extends React.Component {
 
-  componentDidMount(){
-    this.props.getUser(this.props.token);
+  async componentDidMount(){
+    await this.props.getUser(this.props.token);
     this.props.getArticles();
 
 
@@ -49,8 +53,11 @@ class App extends React.Component {
             <Route path="/auth/resetPassword/:token" exact component={ResetPassword}/>
             <Route path="/auth/confirmEmail" exact component={SuccessRegistered}/>
             <Route path="/auth/confirmForgotPassword" exact component={ConfirmForgotPassword}/>
+            <Route path="/auth/settings" exact render={(props) => this.props.isAuthenticated ? <Settings {...props} /> : <Redirect to='/auth/login' />}/>
+            <Route path="/auth/resetMyPassword" exact render={(props) => this.props.isAuthenticated ? <ResetMyPassword {...props} /> : <Redirect to='/auth/login' />}/>
 
             <Route path='/articles/new' exact render={(props) => (this.props.isAuthenticated ? <NewArticle {...props}/> : <Redirect to='/auth/login' />)} />
+            <Route path='/articles/myArticles' exact render={(props) => (this.props.isAuthenticated ? <MyArticles {...props}/> : <Redirect to='/auth/login' />)} />
             <Route path='/articles/edit/:articleId' exact render={(props) => (this.props.isAuthenticated ? <EditArticle {...props}/> : <Redirect to='/auth/login' />)}  />
             <Route path='/articles/:articleId' exact component={ViewArticle} />
 
