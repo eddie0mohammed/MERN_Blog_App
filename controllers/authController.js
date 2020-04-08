@@ -58,7 +58,8 @@ const register = async (req, res, next) => {
         await sendMail({
             email: 'test@test.com',
             subject: 'ACTIVATION EMAIL',
-            message: message
+            message: message,
+            activationURL: activationURL
         });
 
 
