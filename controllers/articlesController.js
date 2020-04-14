@@ -2,6 +2,7 @@
 
 const Article = require('../models/article');
 const uploadPhoto = require('../utils/imageUpload');
+const deleteFile = require('../utils/deleteFile');
 
 
 //multer middleware 
@@ -112,6 +113,14 @@ const deleteArticle = async (req, res, next) => {
                 error: 'Unauthorized'
             });
         } 
+
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'No article found'
+            });
+        }
+        deleteFile(article.imageURL);
 
         await Article.findByIdAndDelete(id);
 

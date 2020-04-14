@@ -34,19 +34,22 @@ class MyArticles extends Component {
                 return (
                 <div key={elem._id} className={styles.block}>
 
-                    <h1 className={styles.title}>{elem.title}</h1>
+                    <div className={styles.imgContainer}>
+                        <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
+                    </div>
                     <div className={styles.innerBlock}>
+                        <h1 className={styles.title}>{elem.title}</h1>
                         <div className={styles.text}>
                             <p className={styles.desc}>{`${elem.article.slice(0, 200)}...`}</p>
                             <p className={styles.details}>{elem.author.username} - {createdDate.toLocaleString().split(',')[0]}</p>
                             
                         </div>
-                        <div className={styles.imgContainer}>
-                            <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
-                        </div>
+                        
                     </div>
-
-                    <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
+                    
+                    <div className={styles.btnContainer}>
+                        <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
+                    </div>
                     
                 </div>  
             )}))
@@ -58,7 +61,9 @@ class MyArticles extends Component {
         return (
             <div className={styles.list}>
                 <h1 className={styles.header}>My Articles</h1>
-                {this.renderArticles()}
+                <div className={styles.list1}>
+                    {this.renderArticles()}
+                </div>
                 
             </div>
         )

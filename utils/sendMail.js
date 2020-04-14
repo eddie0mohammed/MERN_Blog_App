@@ -5,6 +5,7 @@ const handlebars = require('handlebars');
 const fs = require('fs');
 
 
+//READ HTML EMAIL FILE
 var readHTMLFile = function(path, callback) {
 
 
@@ -22,17 +23,7 @@ var readHTMLFile = function(path, callback) {
 
 const sendMail = async (options) => {
 
-    // let htmlTemplate = `
-    // <!DOCTYPE html>
-    // <html lang="en">
-    // <body>
-    //     <p style="text-align: center; font-size: 20px">Welcome</p>
-    //     <p style="text-align: left; font-size: 14px: padding-left: 20px">Thank you for creating an account with us</p>
-    //     <a href=${options.activationURL}>Click here to activate your account. Please use the link below to validate your account.</a>
-    //     <img src="https://source.unsplash.com/random" alt="" style="width: 100px; height: 100px">
-
-    // </body>
-    // </html>`
+    
 
     // 1. create transporter
     //MAILTRAP transporter
@@ -57,11 +48,17 @@ const sendMail = async (options) => {
 
 
 
-    //REPLACE READ EMAIL FILE AND REPLACE VARIABLES
-    readHTMLFile(__dirname + '/emailTemplates/activateAccount.html', async function(err, html) {
+    // READ EMAIL FILE AND REPLACE VARIABLES AND SEND MAIL
+    let HTMLEmailFile;
+    if (options.emailType === 'activation'){
+        HTMLEmailFile = '/emailTemplates/activateAccount.html'
+    }else if (options.emailType === 'forgotPassword'){
+        HTMLEmailFile = '/emailTemplates/resetPassword.html'
+    }
+    readHTMLFile(__dirname + HTMLEmailFile , async function(err, html) {
         var template = handlebars.compile(html);
         var replacements = {
-             link: options.activationURL
+             link: options.URL
         };
         var htmlToSend = template(replacements);
         const mailOptions = {

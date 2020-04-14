@@ -53,13 +53,16 @@ const register = async (req, res, next) => {
         //send activation email
          const activationURL = `${req.protocol}://${req.get('host')}/auth/validate/${activationToken}`;
         //message
-        const message = `Click here to activate your profile and login: ${activationURL}`;
+        // const message = `Click here to activate your profile and login: ${activationURL}`;
         //send email
         await sendMail({
-            email: 'test@test.com',
-            subject: 'ACTIVATION EMAIL',
-            message: message,
-            activationURL: activationURL
+            email: 'test@test.com', //mailtrap service
+            // email: req.body.email, //used for production
+            // email: 'alperceylan52@gmail.com', //used for testing on gmail
+            subject: 'ACCOUNT ACTIVATION EMAIL',
+            // message: message,
+            URL: activationURL,
+            emailType: 'activation'
         });
 
 
@@ -246,13 +249,15 @@ const forgotPassword = async (req, res, next) => {
         //passwordResetURL
         const passwordResetURL = `${req.protocol}://${req.get('host')}/auth/resetPassword/${passwordResetToken}`;
         
-        //message
-        const message = `Click here to reset your password: ${passwordResetURL}`;
+        // //message
+        // const message = `Click here to reset your password: ${passwordResetURL}`;
 
         await sendMail({
             email: 'test@test.com',
-            subject: 'RESET EMAIL',
-            message: message
+            subject: 'PASSWORD RESET EMAIL',
+            // message: message
+            emailType: 'forgotPassword',
+            URL: passwordResetURL
         });
 
         res.status(200).json({

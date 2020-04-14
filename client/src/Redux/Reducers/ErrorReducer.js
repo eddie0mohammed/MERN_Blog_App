@@ -9,11 +9,12 @@ const initialState = {
 const errorReducer = (state = initialState, action) => {
     
     switch(action.type){
-
+        
         case (actionTypes.REGISTER_FAIL):
+            // console.log(action.payload);
             return {
                 ...state,
-                error: "Registration failed"
+                error: action.payload
             }
 
         case (actionTypes.LOGIN_ERROR):

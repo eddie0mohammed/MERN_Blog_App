@@ -19,16 +19,36 @@ class ViewArticle extends Component {
 
     componentDidMount(){
         const id = this.props.match.params.articleId;
-        const currentArticle = this.props.articles.filter(elem => elem._id === id)[0];
-        // console.log(currentArticle.author);
-        this.setState({
-            title: currentArticle.title,
-            article: currentArticle.article,
-            imageURL: currentArticle.imageURL,
-            id: id,
-            author: currentArticle.author.username,
-            authorId: currentArticle.author._id
-        });
+        if (this.props.articles.length > 0){
+
+            const currentArticle = this.props.articles.filter(elem => elem._id === id)[0];
+            // console.log(currentArticle.author);
+            this.setState({
+                title: currentArticle.title,
+                article: currentArticle.article,
+                imageURL: currentArticle.imageURL,
+                id: id,
+                author: currentArticle.author.username,
+                authorId: currentArticle.author._id
+            });
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        if (prevProps.articles !== this.props.articles){
+            const id = this.props.match.params.articleId;
+            const currentArticle = this.props.articles.filter(elem => elem._id === id)[0];
+            // console.log(currentArticle.author);
+            this.setState({
+                title: currentArticle.title,
+                article: currentArticle.article,
+                imageURL: currentArticle.imageURL,
+                id: id,
+                author: currentArticle.author.username,
+                authorId: currentArticle.author._id
+            });
+
+        }
     }
 
     handleDelete = async () => {
@@ -43,25 +63,29 @@ class ViewArticle extends Component {
             
             <div className={styles.viewArticle}>
 
-                <div className={styles.article}>
-                    <h1 className={styles.title}>{this.state.title}</h1>
-
-                    <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
-
-                    <p className={styles.paragraph}>{this.state.author}</p>
-                    <p className={styles.paragraph}>
-                        {this.state.article}
-                    </p>
-
-                </div>
-
-                {this.props.isAuthenticated && this.props.user._id === this.state.authorId ?
+                {this.props.isAuthenticated && this.props.user && this.props.user._id === this.state.authorId ?
                     <div className={styles.btns}>
                         <div className={`${styles.btn} ${styles.edit}`} onClick={() => this.props.history.push(`/articles/edit/${this.state.id}`)}>Edit</div>
                         <div className={`${styles.btn} ${styles.delete}`} onClick={this.handleDelete}>Delete</div>
                     </div>
                     :
                     null}
+
+                <div className={styles.article}>
+                    <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
+                    
+                    <div className={styles.authorDetails}>
+                        <h1 className={styles.title}>Title:{this.state.title}</h1>
+                        <p className={styles.author}>Author: {this.state.author}</p>
+                    </div>
+
+                    <p className={styles.paragraph}>
+                        {this.state.article}
+                    </p>
+
+                </div>
+
+                
 
             </div>
         )

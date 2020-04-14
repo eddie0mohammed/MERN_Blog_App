@@ -26,9 +26,10 @@ export const register = (username, email, password) => async (dispatch) => {
 
 
     }catch(err){
-        console.log(err.response);
+        // console.log(err.response);
         dispatch({
-            type: actionTypes.REGISTER_FAIL
+            type: actionTypes.REGISTER_FAIL,
+            payload: err.response.data.error.message
         });
 
         setTimeout(() => {

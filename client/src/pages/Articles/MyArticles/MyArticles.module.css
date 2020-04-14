@@ -7,6 +7,12 @@
     /* align-items: center; */
 }
 
+.list1{
+    display: flex;
+    flex-wrap: wrap;
+    
+}
+
 .header{
     text-align: center;
     margin-bottom: 5rem;
@@ -15,25 +21,31 @@
 }
 
 .block{
-    background: pink;
+    /* background: pink; */
+    width: 45%;
+    max-width: 400px;
     padding: 1rem 2rem;
     border: 1px solid lightgray;
     border-radius: 4px;
+    margin-bottom: 2rem;
+    margin: 1rem;
     margin-bottom: 2rem;
 }
 
 .title{
     font-size: 3rem;
-    margin: 1rem 0;
+    /* margin: 1rem 0; */
 }
 
 .innerBlock{
     display: flex;
+    flex-direction: column;
+    padding: 1rem;
     
 }
 
 .text{
-    width: 60%;
+    width: 100%;
 }
 
 .desc {
@@ -50,16 +62,22 @@
 }
 
 .imgContainer{
-    width: 40%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 1rem 0;
 }
 .img{
     
     width: 20rem;
     height: 15rem;
     
+}
+
+.btnContainer{
+    display: flex;
+    justify-content: flex-end;
 }
 
 .btn{

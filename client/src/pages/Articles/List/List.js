@@ -8,17 +8,15 @@ import {withRouter} from 'react-router-dom';
 // import * as articlesActionCreators from '../../../Redux/Actions/ArticlesActionCreators';
 
 
-
-
 class List extends Component {
 
     // componentDidMount(){
     //     this.props.getArticles();
     // }
-    
+
 
     renderArticles = () => {
-        return this.props.articles.length === 0 ? 
+        return this.props.articles.length === 0  ? 
             <h1>No articles...</h1>
             :
             (this.props.articles.map(elem => {
@@ -26,20 +24,24 @@ class List extends Component {
 
                 return (
                 <div key={elem._id} className={styles.block}>
-
-                    <h1 className={styles.title}>{elem.title}</h1>
+                    
+                    <div className={styles.imgContainer}>
+                        <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
+                    </div>
+                    
                     <div className={styles.innerBlock}>
+                        <h1 className={styles.title}>{elem.title}</h1>
+                        
                         <div className={styles.text}>
                             <p className={styles.desc}>{`${elem.article.slice(0, 200)}...`}</p>
-                            <p className={styles.details}>{elem.author.username} - {createdDate.toLocaleString().split(',')[0]}</p>
-                            
+                            <p className={styles.details}>{elem.author.username} - {createdDate.toLocaleString().split(',')[0]}</p>        
                         </div>
-                        <div className={styles.imgContainer}>
-                            <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
-                        </div>
+
                     </div>
 
-                    <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
+                    <div className={styles.btnContainer}>
+                        <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
+                    </div>
                     
                 </div>  
             )}))
