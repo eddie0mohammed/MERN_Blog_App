@@ -1,28 +1,36 @@
 
 .header{
     width: 100%;
-    padding: 2rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgb(11, 104, 224);
+    background: #21232b;
     color: white;
+    /* position: fixed;
+    top: 0;
+    left: 0; */
 }
 
 .logo{
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     text-decoration:none;
     color:#fff;
 }
 
+
 .nav{
     display: flex;
+    align-items: center;
 
 }
 
 .btn{
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    font-weight: 500;
     margin: 0 1rem;
     cursor: pointer;
     text-decoration: none;
@@ -32,4 +40,7 @@
 .btn:hover{
     color: red;
 }
+
+
+
 

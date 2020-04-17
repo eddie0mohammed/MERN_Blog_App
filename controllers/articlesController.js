@@ -39,7 +39,9 @@ const createArticle = async (req, res, next) => {
     const newArticle = new Article({
         title: req.body.title,
         article: req.body.article,
-        author: req.user.id
+        author: req.user.id,
+        likes: [],
+        comments: []
     });
 
     if (req.file){
@@ -146,6 +148,15 @@ const updateArticle = async (req, res, next) => {
         // console.log(req.file);
 
         const id = req.params.articleId;
+
+        const article = await Article.findById(id);
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Article not found'
+            });
+        }
+
         const body = {
             createdAt: Date.now()
         };
@@ -156,6 +167,7 @@ const updateArticle = async (req, res, next) => {
             body.article = req.body.article;
         }
         if (req.file){
+            deleteFile(article.imageURL);
             body.imageURL = req.file.filename;
         }
         const updatedArticle = await Article.findByIdAndUpdate(id, body, {new: true, runValidators: true});
@@ -179,10 +191,167 @@ const updateArticle = async (req, res, next) => {
 }
 
 
+const likeArticle = async (req, res, next) => {
+
+    try{
+        const articleId = req.params.articleId;
+        const article = await Article.findById(articleId);
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Article not found'
+            });
+        }
+
+        const userId = req.user.id;
+        let currentLikes = article.likes;
+        currentLikes = [...currentLikes, userId];
+        const body = {likes: currentLikes};
+
+        const updatedArticle = await Article.findByIdAndUpdate(req.params.articleId, body, {new: true, runValidators: true}).populate('author');
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                article: updatedArticle
+            }
+        })
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+    }
+
+}
+
+
+const unlikeArticle = async (req, res, next) => {
+
+    try{
+
+        const articleId = req.params.articleId;
+        const article = await Article.findById(articleId);
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Article not found'
+            })
+        }
+
+        const userId = req.user.id;
+        let currentLikes = article.likes;
+        currentLikes = currentLikes.filter(elem => elem !== userId);
+        const body = {likes: currentLikes};
+
+        const updatedArticle = await Article.findByIdAndUpdate(articleId, body, {new: true, runValidators: true}).populate('authro');
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                article: updatedArticle
+            }
+        })
+
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+    }
+}
+
+const addComment = async (req, res, next) => {
+    
+    try{
+        const articleId = req.params.articleId;
+        const article = await Article.findById(articleId);
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Article not found'
+            });
+        }
+
+        const userId = req.user.id;
+        let commentArray = article.comments;
+        commentArray = [...commentArray, {authorId: userId, ...req.body}];
+        const body = {comments: commentArray};
+
+        const updatedArticle = await Article.findByIdAndUpdate(articleId, body, {new:true, runValidators: true}).populate('author');
+
+        res.status(201).json({
+            status: 'success',
+            data:{
+                article: updatedArticle
+            }
+        })
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+
+    }
+}
+
+
+const removeComment = async (req, res, next) => {
+
+    try{
+        const articleId = req.params.articleId;
+        const article = await Article.findById(articleId);
+        if (!article){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Article not found'
+            });
+        }
+
+        const userId = req.user.id;
+        let commentsArray = article.comments;
+        commentsArray = commentsArray.filter((elem, i) => {
+            if (i !== req.body.key){
+                return elem;
+            }    
+        });
+
+        const body = {comments: commentsArray};
+
+        const updatedArticle = await Article.findByIdAndUpdate(req.params.articleId, body, {new:true, runValidators: true}).populate('author');
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                article: updatedArticle
+            }
+        })
+        
+        
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+    }
+}
+
 module.exports = {
     createArticle: createArticle,
     getArticles: getArticles,
     deleteArticle: deleteArticle,
     updateArticle: updateArticle,
-    multerMiddleware: multerMiddleware
+    multerMiddleware: multerMiddleware,
+    likeArticle: likeArticle,
+    unlikeArticle: unlikeArticle,
+    addComment: addComment, 
+    removeComment: removeComment
 }

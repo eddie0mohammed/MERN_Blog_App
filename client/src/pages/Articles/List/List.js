@@ -10,16 +10,42 @@ import {withRouter} from 'react-router-dom';
 
 class List extends Component {
 
-    // componentDidMount(){
-    //     this.props.getArticles();
-    // }
+    state = {
+        search: ''
+    }
+
+    handleInputChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    filterArticles = () => {
+        if (this.props.articles){
+
+            let articles = this.props.articles;
+            if (this.state.search){
+                articles = articles.filter(elem => {
+                    if (elem.title.toLowerCase().startsWith(this.state.search.toLowerCase()) || elem.article.toLowerCase().startsWith(this.state.search.toLowerCase()) || elem.author.username.toLowerCase().startsWith(this.state.search.toLowerCase())){
+                        return elem;
+                    }
+                })
+            }
+        return articles;
+        }
+    }
 
 
     renderArticles = () => {
         return this.props.articles.length === 0  ? 
-            <h1>No articles...</h1>
+            <h1 className={styles.negative}>No articles...</h1>
             :
-            (this.props.articles.map(elem => {
+            <>
+                <form className={styles.form} onSubmit={this.handleSubmit}>
+                    <input className={styles.search} type="text" name="search" placeholder='Search' value={this.state.search} onChange={this.handleInputChange} autoComplete="off"/>
+                </form>
+
+                {this.filterArticles(this.props.articles).map(elem => {
                 const createdDate = new Date(elem.createdAt);
 
                 return (
@@ -30,21 +56,30 @@ class List extends Component {
                     </div>
                     
                     <div className={styles.innerBlock}>
+                        <div className={styles.row}>
+                            <p className={styles.date}>{createdDate.toLocaleString().split(',')[0].split('/').join('.')}</p>        
+                            
+                            <div className={styles.likesContainer}>
+                                <div className={styles.msc}>Likes: {elem.likes.length}</div>
+                                <div className={styles.msc}>Comments: {elem.comments.length}</div>
+                            </div>
+                            
+                        </div>
+
                         <h1 className={styles.title}>{elem.title}</h1>
                         
-                        <div className={styles.text}>
-                            <p className={styles.desc}>{`${elem.article.slice(0, 200)}...`}</p>
-                            <p className={styles.details}>{elem.author.username} - {createdDate.toLocaleString().split(',')[0]}</p>        
-                        </div>
+                        <p className={styles.desc}>{`${elem.article.slice(0, 200)} ...`}</p>
 
                     </div>
 
                     <div className={styles.btnContainer}>
+                        <p className={styles.author}>By {elem.author.username}</p>        
                         <div className={styles.btn} onClick={() => this.props.history.push(`/articles/${elem._id}`)}>Read More</div>
                     </div>
                     
                 </div>  
-            )}))
+            )})}
+            </>
             
 
     }

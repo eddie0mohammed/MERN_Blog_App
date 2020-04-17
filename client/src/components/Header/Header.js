@@ -7,38 +7,32 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
-import * as authActionCreators from '../../Redux/Actions/AuthActionCreators';
+import Burger from '@animated-burgers/burger-rotate';
+import '@animated-burgers/burger-rotate/dist/styles.css' 
+
 
 class Header extends Component {
 
+
     render() {
+    
         return (
             <div className={styles.header}>
 
-                <Link to="/" className={styles.logo}>LOGO</Link>
-
+                <Link to="/" className={styles.logo}>MYBLOG</Link>
 
                 <div className={styles.nav}>
                     {!this.props.isAuthenticated ? 
                         <>
-                        <Link to="/auth/login" className={styles.btn}>Login</Link>
-                        <Link to="/auth/register" className={styles.btn}>Register</Link>
-                        
-                        
+                            <Link to="/auth/login" className={styles.btn}>Login</Link>
+                            <Link to="/auth/register" className={styles.btn}>Register</Link>
                         </>
                         :
                         <>
-                        <div className={styles.btn} onClick={() => this.props.history.push('/articles/myArticles')}>MyArticles</div>
-                        <div className={styles.btn} onClick={() => this.props.history.push('/articles/new')}>New</div>
-                        <div className={styles.btn} onClick={() => this.props.history.push('/auth/settings')}>Settings</div>
-                        <div className={styles.btn} onClick={() => this.props.logout()}>Logout</div>
-                        
-                        {this.props.user ? 
-                            <p style={{color: 'red', alignSelf:'center', fontSize: '2rem'}}>{this.props.user.username}</p>
-                            :
-                            null            
-                        }
+                           
+                            <Burger isOpen={this.props.sidebarOpen} style={{fontSize: '8px', position: 'relative', zIndex: 1000}} onClick={this.props.toggleSidebar}/>
                         </>
+                        
                     }
     
                 </div>
@@ -57,7 +51,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        logout: () => dispatch(authActionCreators.logout())
+        
     }
 }
 

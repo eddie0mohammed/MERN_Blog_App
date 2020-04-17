@@ -3,64 +3,85 @@ import React, { Component } from 'react'
 
 import styles from './ResetPassword.module.css';
 import {connect} from 'react-redux';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
+import Error from '../../components/ErrorComponent/ErrorComponent';
 
 import * as authActionCreators from '../../Redux/Actions/AuthActionCreators';
 
 
+const validationSchema = Yup.object().shape({
+   
+    password: Yup.string()
+                    .min(8, 'Password is too short - should be 8 chars minimum.')
+                    .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])/, 'Password must contain at least one Uppercase letter, one digit and a special character')
+                    .required('Password required'),
+    confirmPassword: Yup.string()
+                    .oneOf([Yup.ref('password'), null], 'Passwords do not match')
+                    .required('Confirm Password')
+});
+
 class ResetPassword extends Component {
 
-    state = {
-        password: '',
-        confirmPassword: ''
-    }
 
-    handleInputChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
-
-    handleSubmit = async (e) => {
-        e.preventDefault();
+    handleSubmitForm = async (password, confirmPassword) => {
 
         // console.log(this.state);
-        if (this.state.password === this.state.confirmPassword){
+        if (password === confirmPassword){
             const token = this.props.match.params.token;
     
-            await this.props.resetPassword(this.state.password, token);
+            await this.props.resetPassword(password, token);
         }
 
         if (this.props.passwordChanged){
             this.props.history.push('/auth/login');
-        }
-
-        
+        }        
     }
 
-    checkSubmitBtn = () => {
-        let check = true;
-        if (this.state.password === this.state.confirmPassword && this.state.password){
-            check = false;
-        }
-        return check;
-    }
     
     render() {
         
         return (
             <div className={styles.register}>
 
-                <form className={styles.form} onSubmit={this.handleSubmit}>
+                <Formik
+                    initialValues = {{
+                        password: '',
+                        confirmPassword: ''
+                    }}
+                    validationSchema={validationSchema}
 
-                    <h1 className={styles.heading}>Reset Password</h1>    
-
+                    onSubmit={ (values, {setSubmitting, resetForm}) => {
+                        setSubmitting(true);
+                        
+                        //form submitted => what actions to take
+                        this.handleSubmitForm(values.password, values.confirmPassword);
+                        
+                        resetForm();
+                        setSubmitting(false);
+                    }}
                     
-                    <input className={styles.input} type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange}/>
-                    <input className={styles.input} type="password" name="confirmPassword" placeholder="Confirm Password" value={this.state.confirmPassword} onChange={this.handleInputChange}/>
+                >
+                {({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
+                    
+                        <form className={styles.form} onSubmit={handleSubmit}>
 
-                    <input className={styles.submit} type="submit" value="Submit" disabled={this.checkSubmitBtn()}/>
+                            <h1 className={styles.heading}>Reset Password</h1>    
+                            
+                            <input className={`${styles.input} ${touched.password && errors.password ? `${styles.error}` : '' }`} type="password" name="password" placeholder="Password" value={values.password} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
+                            <Error touched={touched.password} message={errors.password}/>
+                            
+                            <input className={`${styles.input} ${touched.confirmPassword && errors.confirmPassword ? `${styles.error}` : '' }`} type="password" name="confirmPassword" placeholder="Confirm Password" value={values.confirmPassword} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
+                            <Error touched={touched.confirmPassword} message={errors.confirmPassword}/>
 
-                </form>                
+                            <input className={styles.submit} type="submit" value="Submit" disabled={isSubmitting}/>
+
+                        </form>
+
+                )}
+                </Formik>
+
             </div>
         )
     }

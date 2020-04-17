@@ -24,7 +24,6 @@ var readHTMLFile = function(path, callback) {
 const sendMail = async (options) => {
 
     
-
     // 1. create transporter
     //MAILTRAP transporter
     const transporter = nodemailer.createTransport({

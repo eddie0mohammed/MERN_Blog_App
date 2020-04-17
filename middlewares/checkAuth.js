@@ -19,6 +19,12 @@ const checkAuth = (req, res, next) => {
 
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         // console.log(verified);
+        if (!verified){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Unauthorized'
+            });
+        }
         req.user = verified;
         
     }catch(err){

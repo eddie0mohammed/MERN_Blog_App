@@ -14,7 +14,9 @@ class ViewArticle extends Component {
         imageURL: '',
         id: '',
         author: '',
-        authorId: ''
+        authorId: '',
+        currentArticle: '',
+        textarea: ''
     }
 
     componentDidMount(){
@@ -29,7 +31,8 @@ class ViewArticle extends Component {
                 imageURL: currentArticle.imageURL,
                 id: id,
                 author: currentArticle.author.username,
-                authorId: currentArticle.author._id
+                authorId: currentArticle.author._id,
+                currentArticle: currentArticle
             });
         }
     }
@@ -39,16 +42,26 @@ class ViewArticle extends Component {
             const id = this.props.match.params.articleId;
             const currentArticle = this.props.articles.filter(elem => elem._id === id)[0];
             // console.log(currentArticle.author);
-            this.setState({
-                title: currentArticle.title,
-                article: currentArticle.article,
-                imageURL: currentArticle.imageURL,
-                id: id,
-                author: currentArticle.author.username,
-                authorId: currentArticle.author._id
-            });
+            if (currentArticle){
+                this.setState({
+                    title: currentArticle.title,
+                    article: currentArticle.article,
+                    imageURL: currentArticle.imageURL,
+                    id: id,
+                    author: currentArticle.author.username,
+                    authorId: currentArticle.author._id,
+                    currentArticle: currentArticle
+                });
+
+            }
 
         }
+    }
+
+    handleInputChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
     }
 
     handleDelete = async () => {
@@ -57,40 +70,168 @@ class ViewArticle extends Component {
         this.props.history.push('/');
     }
 
-    render() {
+    handleLike = async () => {
+        await this.props.likeArticle(this.props.match.params.articleId);
         
-        return (
+    }
+
+    handleUnlike = async () => {
+        await this.props.unlikeArticle(this.props.match.params.articleId);
+    }
+
+
+    renderButtons = () => {
+        if (this.props.isAuthenticated){
+            if (this.props.user._id === this.state.authorId){
+                return (
+                    <div className={styles.btns}>
+                        <div className={`${styles.btn} ${styles.edit}`} onClick={() => this.props.history.push(`/articles/edit/${this.state.id}`)}>Edit</div>
+                        <div className={`${styles.btn} ${styles.delete}`} onClick={this.handleDelete}>Delete</div>
+                    </div>
+                )
+            }else{
+                if (!this.state.currentArticle.likes.includes(this.props.user._id)){
+                    return (
+                            <div className={styles.likeBtnContainer}>
+                                <div className={styles.likeBtn} onClick={this.handleLike} >Like</div>
+                            </div>
+                    )
+                }else{
+                    return(
+                        <div className={styles.likeBtnContainer}>
+                            <div className={styles.likeBtn} onClick={this.handleUnlike} >Unlike</div>
+                        </div>
+                    )
+                }
+            }
+        }
+    }
+
+    renderComments = () => {
+        if (this.state.currentArticle){
+            return this.state.currentArticle.comments.map((elem, i) => {
+                return (
+                    <div key={i} className={styles.comment}>
+                        <h2 className={styles.name}>Author: {elem.username}</h2>
+                        <p className={styles.commentDesc}>{elem.comment}</p>
+
+                        {this.props.user && this.props.user._id === elem.authorId &&
+                            <div className={styles.deleteComment} onClick={() => this.handleRemoveComment(i)}>delete</div>
+                        }
+                    </div>
+
+                )
+            })
+        }  
+    }
+
+    handleCommentSubmit = async (e) => {
+        e.preventDefault();
+        const res = await this.props.addComment(this.state.textarea, this.props.match.params.articleId, this.props.user.username);
+        
+        if (res.status === 'success'){
+            this.setState({
+                textarea: ''
+            });
+        }
+        
+    }
+
+    handleRemoveComment = async (key) => {
+
+        await this.props.removeComment(key, this.props.match.params.articleId);
+
+    }
+
+    checkCommentSubmitBtn = () => {
+        let disabled = true;
+        if (this.state.textarea){
+            disabled = false;
+        }
+        return disabled;
+    }
+
+    render() {
+        return this.state.currentArticle ? 
+         (
             
             <div className={styles.viewArticle}>
 
-                {this.props.isAuthenticated && this.props.user && this.props.user._id === this.state.authorId ?
+                
+
+                <div className={styles.article}>
+                    <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
+
+                    {/* {this.props.isAuthenticated && this.props.user && this.props.user._id === this.state.authorId ?
                     <div className={styles.btns}>
                         <div className={`${styles.btn} ${styles.edit}`} onClick={() => this.props.history.push(`/articles/edit/${this.state.id}`)}>Edit</div>
                         <div className={`${styles.btn} ${styles.delete}`} onClick={this.handleDelete}>Delete</div>
                     </div>
                     :
-                    null}
+                        this.props.isAuthenticated && this.props.user && this.props.user._id !== this.state.authorId ?
 
-                <div className={styles.article}>
-                    <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
+                        <div className={styles.likeBtnContainer}>
+                            <div className={styles.likeBtn} onClick={() => this.props.likeArticle}>Like</div>
+                        </div>
+                        
+                        :
+                        null
+                    
+                    } */}
+                    {this.renderButtons()}
                     
                     <div className={styles.authorDetails}>
-                        <h1 className={styles.title}>Title:{this.state.title}</h1>
-                        <p className={styles.author}>Author: {this.state.author}</p>
+                        <div className={styles.detailsContainer}>
+                            <p className={styles.date}>{this.state.currentArticle.createdAt.split('T')[0]}</p>
+
+                            <div className={styles.likesContainer}>
+                                <div className={styles.msc}>Likes: {this.state.currentArticle && this.state.currentArticle.likes.length}</div>
+                                <div className={styles.msc}>Comments: {this.state.currentArticle && this.state.currentArticle.comments.length}</div>
+                                
+                            </div>
+
+                        </div>
+                        <div className={styles.authorContainer}>
+                            <h1 className={styles.title}>Title: {this.state.title}</h1>
+                            <p className={styles.author}>Author: {this.state.author}</p>
+                        </div>
                     </div>
 
-                    <p className={styles.paragraph}>
+                    <p className={styles.desc}>
                         {this.state.article}
                     </p>
 
                 </div>
 
+                {this.props.isAuthenticated &&
+                    <>
+                    <p className={styles.commentsLabel}>Comments</p>
+                    <div className={styles.commentSection}>
+
+                        <div className={styles.commentBox}>
+                            
+                            {this.renderComments()}
+
+                        </div>
+
+                        <form className={styles.commentInput} onSubmit={this.handleCommentSubmit}>
+                            <textarea className={styles.textarea} name='textarea' id="textarea" placeholder="Enter Comment" value={this.state.textarea} onChange={this.handleInputChange} />
+                            <input type="submit" value="add" className={styles.submit} disabled={this.checkCommentSubmitBtn()}/>
+                        </form>
+
+                    </div>
+                    </>
+                }
+
                 
 
             </div>
         )
+        :
+        <h1 className={styles.loading}>Loading...</h1>
     }
 }
+
 
 const mapStateToProps = (state) => {
     return {
@@ -103,6 +244,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         deleteArticle: (id) => dispatch(articlesActionCreators.deleteArticle(id)),
+        likeArticle: (articleId) => dispatch(articlesActionCreators.likeArticle(articleId)),
+        unlikeArticle: (articleId) => dispatch(articlesActionCreators.unlikeArticle(articleId)),
+        addComment: (comment, articleId, username) => dispatch(articlesActionCreators.addComment(comment, articleId, username)),
+        removeComment: (key, articleId) => dispatch(articlesActionCreators.removeComment(key, articleId))
     }
 }
 

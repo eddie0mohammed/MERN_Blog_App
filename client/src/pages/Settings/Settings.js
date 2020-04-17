@@ -13,11 +13,9 @@ class Settings extends Component {
     renderComponent = () => {
         return this.props.user ? 
         (
-            <div className={styles.settings}>
-
-                <h1 className={styles.header}>Settings</h1>
-
+           
                 <div className={styles.container}>
+                    <h1 className={styles.header}>Settings</h1>
 
                     <input className={styles.input} type="text" name="username" value={this.props.user.username} disabled/>
                     <input className={styles.input} type="email" name="email"  value={this.props.user.email} disabled/>
@@ -28,9 +26,12 @@ class Settings extends Component {
                         <p className={styles.changePassword}>Change Password</p>                        
                         <Link className={styles.link} to={`/auth/resetMyPassword`}>Click here</Link>
                     </div>
-                </div>
-                
-            </div>
+
+                    <div className={styles.changeContainer}>
+                        <p className={styles.changePassword}>Change Profile Picture</p>                        
+                        <Link className={styles.link} to={`/auth/changePicture`}>Click here</Link>
+                    </div>
+                </div>     
 
         )
         :
@@ -41,7 +42,9 @@ class Settings extends Component {
     render() {
         
         return (
-            <div>{this.renderComponent()}</div>
+            <div className={styles.settings}>
+                {this.renderComponent()}
+            </div>
         )
     }
 }

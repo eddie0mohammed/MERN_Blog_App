@@ -1,0 +1,12 @@
+.formMessage{
+    
+    padding: 0.2rem 0;
+    display: inline;
+    font-size: 1rem;
+    margin-top: 2px;
+    
+}
+
+.invalid{
+    color: red;
+}

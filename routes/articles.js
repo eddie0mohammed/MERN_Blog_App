@@ -32,4 +32,26 @@ router.delete('/:articleId', checkAuth,  articlesController.deleteArticle);
 router.patch('/:articleId', checkAuth,  articlesController.multerMiddleware, articlesController.updateArticle);
 
 
+// @route PATCH /articles/like/:id
+// @desc Like article 
+// @Private
+router.patch('/like/:articleId', checkAuth, articlesController.likeArticle);
+
+
+// @route PATCH /articles/unlike/:id
+// @desc Unlike article 
+// @Private
+router.patch('/unlike/:articleId', checkAuth, articlesController.unlikeArticle);
+
+
+// @route PATCH /articles/add-comment/:id
+// @desc Add new comment 
+// @Private
+router.patch('/add-comment/:articleId', checkAuth, articlesController.addComment);
+
+// @route PATCH /articles/remove-comment/:id
+// @desc Delete comment 
+// @Private
+router.patch('/remove-comment/:articleId', checkAuth, articlesController.removeComment);
+
 module.exports = router;

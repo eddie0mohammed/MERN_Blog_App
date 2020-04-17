@@ -45,6 +45,7 @@ app.use(bodyParser.json());
 
 //Serve Static File
 app.use('/images' , express.static(path.join(__dirname, 'public', 'images')));
+app.use('/profile-pic' , express.static(path.join(__dirname, 'public', 'profilePic')));
 
 if (process.env.NODE_ENV === 'production'){
     

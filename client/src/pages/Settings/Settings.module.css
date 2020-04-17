@@ -3,14 +3,16 @@
     width: 100%;
     height: 100vh;
     /* display: flex; */
-    
+    background: #2d3037;
+    padding-top: 10rem;
 }
 
 
 .header{
     text-align: center;
-    margin-top: 5rem;
-    font-size: 5rem;
+    margin: 2rem 0 5rem 0;
+    font-size: 3rem;
+    color: white;
     
 }
 
@@ -20,11 +22,13 @@
     flex-direction: column;
     align-items: center;
     margin: 0 auto;
-    margin-top: 5rem;
+    /* margin-top: 5rem; */
     box-shadow: 0 1rem 2rem rgba(0,0,0,0.5);
-    width: 50%;
-    padding: 5rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 3rem 2rem;
     border-radius: 4px;
+
 }
 
 .input{
@@ -32,6 +36,11 @@
     margin: 1rem 0;
     padding: 1rem;
     font-size: 1.6rem;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    background: #3d434a;
+    color: white;
 
 }
 
@@ -41,11 +50,14 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 3rem;
+    color: white;
+    padding-bottom: 4rem;
 }
 
 .changePassword{
     /* margin-top: 3rem; */
     font-size: 2rem;
+    
 }
 
 .link{
@@ -56,6 +68,8 @@
     font-size: 1.5rem;
     color: white;
     background: black;
+    transition: 0.4s;
+    
 }
 
 .link:hover{
@@ -67,4 +81,6 @@
     display: flex;
     justify-content: center;
     margin-top: 5rem;
+    color: white;
+    font-size: 2rem;
 }

@@ -93,6 +93,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 myPasswordChanged: false
             }
+
+        case (actionTypes.CHANGE_PICTURE):
+            return {
+                ...state,
+                user: action.payload
+            }
         
 
         default:

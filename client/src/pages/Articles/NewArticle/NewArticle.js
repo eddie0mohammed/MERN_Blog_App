@@ -47,7 +47,7 @@ class NewArticle extends Component {
     }
 
     render() {
-       
+
 
         return (
             <div className={styles.newArticle}>
@@ -56,12 +56,17 @@ class NewArticle extends Component {
 
                     <h1 className={styles.heading}>New Article</h1>
 
-                    <input className={styles.input} type="text" name="title" placeholder="Title" value={this.state.title} onChange={this.inputChangeHandler}/>
+                    <input className={styles.input} type="text" name="title" placeholder="Title" value={this.state.title} onChange={this.inputChangeHandler} autoComplete="off"/>
 
-                    <input className={styles.file} type="file" onChange={this.handleSelectedFile}/>
+                    <input className={styles.file} style={{display: 'none'}} type="file" onChange={this.handleSelectedFile} ref={imgInput => this.imgInput = imgInput} />
+
+                    <div className={styles.button} onClick={() => this.imgInput.click()}>Choose File</div>
+                    
+                    <p className={styles.fileName}>{this.state.selectedFile && this.state.selectedFile.name}</p>
+
                     {this.props.error ? <p style={{color: 'red'}}>{this.props.error}</p> : null }
 
-                    <textarea className={styles.textarea} type="text" name="article" placeholder="Article" value={this.state.article} onChange={this.inputChangeHandler}/>
+                    <textarea className={styles.textarea} type="text" name="article" placeholder="Article" value={this.state.article} onChange={this.inputChangeHandler} autoComplete="off"/>
 
                     <input className={styles.submit} type="submit" value='Submit' disabled={this.checkSubmitBtn()}/>
 

@@ -1,12 +1,15 @@
 
 .home{
     width: 100%;
+    background: #2d3037;
 
 }
 
 .header{
     text-align: center;
-    margin-top: 5rem;
-    font-size: 5rem;
+    /* margin-top: 5rem; */
+    padding-top: 3rem;
+    font-size: 3rem;
+    color: white;
     
 }

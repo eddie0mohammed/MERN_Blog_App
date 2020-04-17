@@ -46,6 +46,58 @@ const articleReducer = (state = initialState, action) => {
                 articles: action.payload.data.articles
             }
 
+
+        case (actionTypes.LIKE_ARTICLE):
+            const currentArticles1 = [...state.articles];
+            const articleIndex = currentArticles1.findIndex(elem => elem._id === action.payload.articleId);
+            const currentArticle = currentArticles1[articleIndex];
+            currentArticle.likes = [...currentArticle.likes, action.payload.userId];
+            currentArticles1[articleIndex] = currentArticle
+            return {
+                ...state,
+                articles: currentArticles1
+
+            }
+
+        case (actionTypes.UNLIKE_ARTICLE):
+            const currentArticles2 = [...state.articles];
+            const articleIndex1 = currentArticles2.findIndex(elem => elem._id === action.payload.articleId);
+            const currentArticle1 = currentArticles2[articleIndex1];
+            currentArticle1.likes = currentArticle1.likes.filter(elem => elem !== action.payload.userId);
+            currentArticles2[articleIndex1] = currentArticle1;
+
+
+            return {
+                ...state,
+                articles: currentArticles2
+            }
+
+        case (actionTypes.ADD_COMMENT):
+            const article = state.articles.filter(elem => elem._id === action.payload.articleId)[0];
+            const arIndex = state.articles.findIndex(elem => elem._id === action.payload.articleId);
+            article.comments = action.payload.comments;
+            const updatedArticles = [...state.articles];
+            updatedArticles[arIndex] = article;
+
+
+            return {
+                ...state,
+                articles: updatedArticles
+
+            }
+
+        case (actionTypes.REMOVE_COMMENT):
+            const article1 = state.articles.filter(elem => elem._id === action.payload.articleId)[0];
+            const arIndex1 = state.articles.findIndex(elem => elem._id === action.payload.articleId);
+            article1.comments = action.payload.comments;
+            const updatedArticles1 = [...state.articles];
+            updatedArticles1[arIndex1] = article1;
+            
+            return {
+                ...state,
+                articles: updatedArticles1
+            }
+
         default:
             return state;
     }

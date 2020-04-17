@@ -1,0 +1,94 @@
+
+.newArticle{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    background: #2d3037;
+    height: 100vh;
+    
+}
+
+.form{
+    margin-top: 10rem;
+    width: 80%;
+    max-width: 800px;
+    height: 30rem;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.heading{
+    margin: 3rem 0 3rem 0;
+    font-size: 3rem;
+    color: white;
+
+}
+
+.input{
+    width: 90%;
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1.6rem;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    background: #3d434a;
+    color: white;
+}
+
+.button{
+    width: 90%;
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1.6rem;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    background: lightgray;
+    color: black;
+    text-align: center;
+    cursor: pointer;
+}
+.button:hover{
+    background: gray;
+    color: white;
+}
+
+.fileName{
+    color: white;
+    margin: 1rem 0;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+
+.submit{
+    margin: 2rem 0 2rem 0;
+    background: #2b6953;
+    /* background: #54b693;
+    background: #3c9273; */
+    color: white;
+    width: 90%;
+    padding: 1rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-weight: 600;
+    outline:none;
+
+}
+
+.submit:hover{
+    background: #3c9273;
+}
+
+.file{
+    display: flex;
+    margin: 4rem 0 1rem 0;
+    font-size: 2rem;
+    width: 80%;
+    
+}

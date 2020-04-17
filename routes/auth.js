@@ -57,6 +57,10 @@ router.post('/resetPassword/:token', authController.resetPassword);
 router.post('/resetMyPassword', checkAuth, authController.resetMyPassword);
 
 
+// @path    PATCH /auth/changePicture
+// @desc    change profile picture
+// @access  Private
+router.patch('/changePicture', checkAuth, authController.multerMiddleware, authController.changePicture);
 
 
 

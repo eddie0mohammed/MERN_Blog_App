@@ -50,7 +50,13 @@ const userSchema = new mongoose.Schema({
 
     passwordResetExpires: {
         type: Date,
-    }
+    },
+
+    profilePic:{
+        type: String,
+        default: '1.jpg'
+    } 
+
 
 });
 

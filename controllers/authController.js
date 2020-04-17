@@ -7,6 +7,28 @@ const crypto = require('crypto');
 const User = require('../models/user');
 const sendMail = require('../utils/sendMail');
 
+const uploadPhoto = require('../utils/profilePicUpload');
+const deleteFile = require('../utils/deleteProfilePicture');
+
+
+//multer middleware 
+const multerMiddleware = (req, res, next) => {
+    uploadPhoto(req, res, (err) => {
+        
+        
+        if (err){
+            // console.log(err)
+            return res.status(400).json({
+                status: 'fail',
+                error: err
+            });
+        }else{
+            next();
+        }
+    })
+}
+
+
 
 //REGISTER
 const register = async (req, res, next) => {
@@ -195,6 +217,12 @@ const validateAccount = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     
     try{
+        if (!req.user){
+            return res.status(400).json({
+                status: 'fail',
+                error: 'Unauthorized'
+            })
+        }
 
         const user = await User.findById(req.user.id);
         if (!user){
@@ -254,6 +282,7 @@ const forgotPassword = async (req, res, next) => {
 
         await sendMail({
             email: 'test@test.com',
+            // email: req.body.email, // for production
             subject: 'PASSWORD RESET EMAIL',
             // message: message
             emailType: 'forgotPassword',
@@ -376,7 +405,47 @@ const resetMyPassword = async (req, res, next) => {
 
 }
 
+const changePicture = async (req, res, next) => {
 
+    try{
+        // 1. find user by id from token
+        const user = await User.findById(req.user.id);
+        if (!user){
+            return res.status(400).json({
+                status: 'fail',
+                error: "No user found"
+            });
+        }
+        
+        const body = {};
+        //2, check if there is a file
+        if (req.file){
+            if (user.profilePic !== '1.jpg'){
+                deleteFile(user.profilePic);
+            }
+            body.profilePic = req.file.filename
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.user.id, body, {new: true, runValidators: true});
+
+        res.status(201).json({
+            status: 'success',
+            data: {
+                user: updatedUser
+            }
+        })
+
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            status: 'fail',
+            error: err
+        });
+
+    }
+
+
+}
 
 module.exports = {
     register: register,
@@ -386,5 +455,7 @@ module.exports = {
     forgotPassword: forgotPassword,
     redirectToResetPassword: redirectToResetPassword,
     resetPassword: resetPassword,
-    resetMyPassword: resetMyPassword
+    resetMyPassword: resetMyPassword,
+    multerMiddleware: multerMiddleware,
+    changePicture: changePicture
 }

@@ -5,60 +5,87 @@ import styles from './Register.module.css';
 
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
+import Error from '../../components/ErrorComponent/ErrorComponent';
 
 import * as authActionCreators from '../../Redux/Actions/AuthActionCreators';
 
 
+const validationSchema = Yup.object().shape({
+    username: Yup.string()
+                    .min(3, 'Username is too short - should be 3 chars minimum.')
+                    .required('Username is required'),
+    email: Yup.string()
+                    .email('Must be a valid email address')
+                    .required('Email required'),
+    password: Yup.string()
+                    .min(8, 'Password is too short - should be 8 chars minimum.')
+                    .matches(/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])/, 'Password must contain at least one Uppercase letter, one digit and a special character')
+                    .required('Password required')
+});
+
+
 class Register extends Component {
 
-    state = {
-        username: '',
-        email: '',
-        password: ''
-    }
 
-    handleInputChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
+    handleSubmitForm = async (username, email, password) => {
 
-    handleSubmit = async (e) => {
-        e.preventDefault();
-
-        await this.props.register(this.state.username, this.state.email, this.state.password);
+        await this.props.register(username, email, password);
         if (this.props.registerSuccess){
             this.props.history.push('/auth/confirmEmail');
         }
     }
 
-    checkSubmitBtn = () => {
-        let check = true;
-        if (!this.state.email || !this.state.password || !this.state.username){
-            check = false;
-        }
-        return check;
-    }
-    
     render() {
         
         return (
             <div className={styles.register}>
 
-                <form className={styles.form} onSubmit={this.handleSubmit}>
+                <Formik
+                    initialValues = {{
+                        username: '',
+                        email: '',
+                        password: ''
+                    }}
+                    validationSchema={validationSchema}
 
-                    <h1 className={styles.heading}>Register</h1>    
+                    onSubmit={ (values, {setSubmitting, resetForm}) => {
+                        setSubmitting(true);
+                        
+                        //form submitted => what actions to take
+                        this.handleSubmitForm(values.username, values.email, values.password)
+                        
+    
+                        // resetForm();
+                        setSubmitting(false);
+                    }}
+                    
+                >
+                {({values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting}) => (
 
-                    <input className={styles.input} type="text" name="username" placeholder="Username" value={this.state.username} onChange={this.handleInputChange}/>
-                    <input className={styles.input} type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.handleInputChange}/>
-                    <input className={styles.input} type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.handleInputChange}/>
+                        <form className={styles.form} onSubmit={handleSubmit}>
 
+                            <h1 className={styles.heading}>Register</h1>    
 
-                    {this.props.error ? <p style={{color: 'red'}}>{this.props.error}</p> : null }
-                    <input className={styles.submit} type="submit" value="Submit" disabled={!this.checkSubmitBtn()}/>
+                            <input className={`${styles.input} ${touched.username && errors.username ? `${styles.error}` : '' }`} type="text" name="username" placeholder="Username" value={values.username} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
+                            <Error touched={touched.username} message={errors.username}/>
 
-                    <Link to="/auth/login" className={styles.link}>Already have an account? Login</Link>
-                </form>                
+                            <input className={`${styles.input} ${touched.email && errors.email ? `${styles.error}` : '' }`} type="email" name="email" placeholder="Email" value={values.email} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
+                            <Error touched={touched.email} message={errors.email}/>
+
+                            <input className={`${styles.input} ${touched.password && errors.password ? `${styles.error}` : '' }`} type="password" name="password" placeholder="Password" value={values.password} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
+                            <Error touched={touched.password} message={errors.password}/>
+
+                            {this.props.error ? <p style={{color: 'red'}}>{this.props.error}</p> : null }
+                            <input className={styles.submit} type="submit" value="Submit" disabled={isSubmitting}/>
+
+                            <Link to="/auth/login" className={styles.link}>Already have an account? <span style={{fontWeight: '600'}}>Login</span></Link>
+                        </form>  
+                )}
+                </Formik>
+
             </div>
         )
     }

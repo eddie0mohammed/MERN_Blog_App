@@ -1,0 +1,124 @@
+
+.container{
+    width: 100%;
+    min-height: 100vh;
+    background: #2d3037;
+    padding: 2rem 1rem;
+}
+
+.imageContainer{
+    width: 80%;
+    max-width: 800px;
+    margin: 1rem auto;
+    position: relative;
+
+}
+
+.img{
+    width: 100%;
+    max-height: 50rem;
+    border-radius: 3px;
+}
+
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background: rgba(0,0,0,0.5);
+}
+
+.message{
+    
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    /* padding: 1rem 10rem; */
+    /* text-align:center; */
+}
+
+.title{
+    margin: 0 auto;
+    margin-top: 10rem;
+    font-size: 3rem;
+    /* text-align: center; */
+}
+
+.desc{
+    margin: 0 auto;
+    margin-top: 4rem;
+    line-height: 2.5rem;
+    font-size: 2rem;
+    /* max-width: 600px; */
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 1px;
+}
+@media (max-width: 768px){
+    .title{
+        margin-top:4rem;
+    }
+    .desc{
+        margin-top: 2rem;
+        font-size: 1.6rem;
+    }
+}
+
+.btns{
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.login{
+    margin-top: 0.5rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 3px;
+    /* background: #2b6953; */
+    background: #54b693;
+    /* background: #3c9273; */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-weight: 600;
+    outline:none;
+    text-align: center;
+}
+.login:hover{
+     background: #3c9273;
+}
+.register{
+    margin-top: 1.2rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 3px;
+    background: #2b6953;
+    /* background: #54b693; */
+    /* background: #3c9273;  */
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+    font-weight: 600;
+    outline:none;
+    text-align: center;
+}
+.register:hover{
+     background: #3c9273;
+}

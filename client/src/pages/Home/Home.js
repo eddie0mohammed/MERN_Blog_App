@@ -8,7 +8,7 @@ class Home extends Component {
     render() {
         return (
             <div className={styles.home}>
-                <h1 className={styles.header}>Blog</h1>
+                <h1 className={styles.header}>Articles</h1>
                 <List />
             </div>
         )

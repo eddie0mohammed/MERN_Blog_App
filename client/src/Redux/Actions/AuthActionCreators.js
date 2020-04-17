@@ -223,6 +223,10 @@ export const resetMyPassword = (currentPassword, newPassword) => async (dispatch
              type: actionTypes.RESET_MY_PASSWORD
          });
 
+         return {
+             status: 'success'
+         }
+
 
 
     }catch(err){
@@ -236,6 +240,9 @@ export const resetMyPassword = (currentPassword, newPassword) => async (dispatch
             });
         }, 3000);
 
+        return {
+            status: 'fail'
+        }
     }
 
     
@@ -244,5 +251,59 @@ export const resetMyPassword = (currentPassword, newPassword) => async (dispatch
 export const resetMyPasswordStatus = () => {
     return {
         type: actionTypes.RESET_MY_PASSWORD_STATUS
+    }
+}
+
+
+export const changePicture = (picture) => async (dispatch, getState) => {
+
+    try{
+        const token = getState().auth.token;
+        if (!token){
+            return {
+                status: 'fail'
+            }
+        }
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'auth-token': token
+            }
+        }
+
+        const formData = new FormData();
+        if (picture){
+            formData.append('profilePic', picture, picture.filename);
+        }
+
+        const res = await axios.patch(`http://localhost:8080/auth/changePicture`, formData, config);
+        // console.log(res.data);
+
+        dispatch({
+            type: actionTypes.CHANGE_PICTURE,
+            payload: res.data.data.user
+        });
+
+        return {
+            status: 'success'
+        }
+        
+
+    }catch(err){
+        console.log(err);
+        dispatch({
+            type: actionTypes.ERROR_IMG,
+            payload: err.response.data.error.message
+        });
+        setTimeout(() => {
+            dispatch({
+                type: actionTypes.CLEAR_ERRORS
+            });
+        }, 3000);
+
+        return {
+            status: 'fail'
+        }
     }
 }
