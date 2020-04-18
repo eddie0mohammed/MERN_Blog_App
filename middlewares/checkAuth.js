@@ -24,18 +24,21 @@ const checkAuth = (req, res, next) => {
                 status: 'fail',
                 error: 'Unauthorized'
             });
+        }else{
+
+            req.user = verified;
+            next();
         }
-        req.user = verified;
         
     }catch(err){
-        console.log(err.response);
-        res.status(401).json({
+        console.log(err);
+        return res.status(401).json({
             status: "fail",
             error: err
         });
     }
 
-    next();
+    
 }
 
 

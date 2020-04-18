@@ -21,8 +21,8 @@ export const addArticle = (title, article, file) => async (dispatch, getState) =
         formData.append("article", article);
 
         // const res = await axios.post('http://localhost:8080/articles', body, config);
-        const res = await axios.post('http://localhost:8080/articles', formData, config);
-        // const res = await axios.post('/articles', formData, config);
+        // const res = await axios.post('http://localhost:8080/articles', formData, config);
+        const res = await axios.post('/articles', formData, config);
         // console.log(res.data);
         dispatch({
             type: actionTypes.ADD_ARTICLE,
@@ -57,7 +57,8 @@ export const deleteArticle = (id) => async (dispatch, getState) => {
         }
         
         // await axios.delete(`/articles/${id}`);
-        await axios.delete(`http://localhost:8080/articles/${id}`, config);
+        // await axios.delete(`http://localhost:8080/articles/${id}`, config);
+        await axios.delete(`/articles/${id}`, config);
 
         dispatch({
             type: actionTypes.DELETE_ARTICLE,
@@ -94,8 +95,8 @@ export const updateArticle = (id, title, article, file) => async (dispatch, getS
         }
 
         // await axios.patch(`http://localhost:8080/articles/${id}`, body, config);
-        const res = await axios.patch(`http://localhost:8080/articles/${id}`, formData, config);
-        // const res = await axios.patch(`/articles/${id}`, formData, config);
+        // const res = await axios.patch(`http://localhost:8080/articles/${id}`, formData, config);
+        const res = await axios.patch(`/articles/${id}`, formData, config);
         // console.log(res.data);
         dispatch({
             type: actionTypes.UPDATE_ARTICLE,
@@ -128,8 +129,8 @@ export const getArticles = () => async (dispatch) => {
 
     try{
 
-        const res = await axios.get('http://localhost:8080/articles');
-        // const res = await axios.get('/articles');
+        // const res = await axios.get('http://localhost:8080/articles');
+        const res = await axios.get('/articles');
         // console.log(res.data);
 
         dispatch({
@@ -164,7 +165,8 @@ export const likeArticle = (articleId) => async (dispatch, getState) => {
 
         const body = JSON.stringify({})
 
-        await axios.patch(`http://localhost:8080/articles/like/${articleId}`, body, config);
+        // await axios.patch(`http://localhost:8080/articles/like/${articleId}`, body, config);
+        await axios.patch(`/articles/like/${articleId}`, body, config);
         // console.log(res.data);
 
         dispatch({
@@ -215,7 +217,8 @@ export const unlikeArticle = (articleId) => async (dispatch, getState) => {
 
         const body = JSON.stringify({});
 
-        await axios.patch(`http://localhost:8080/articles/unlike/${articleId}`, body, config);
+        // await axios.patch(`http://localhost:8080/articles/unlike/${articleId}`, body, config);
+        await axios.patch(`/articles/unlike/${articleId}`, body, config);
         // console.log(res.data);
 
         dispatch({
@@ -267,7 +270,8 @@ export const addComment = (comment, articleId, username) => async (dispatch, get
 
         const body = JSON.stringify({comment, username});
 
-        const res = await axios.patch(`http://localhost:8080/articles/add-comment/${articleId}`, body, config);
+        // const res = await axios.patch(`http://localhost:8080/articles/add-comment/${articleId}`, body, config);
+        const res = await axios.patch(`/articles/add-comment/${articleId}`, body, config);
         // console.log(res.data);
 
         dispatch({
@@ -321,7 +325,8 @@ export const removeComment = (key, articleId) => async (dispatch, getState) => {
 
         const body = JSON.stringify({key: key});
 
-        const res = await axios.patch(`http://localhost:8080/articles/remove-comment/${articleId}`, body, config );
+        // const res = await axios.patch(`http://localhost:8080/articles/remove-comment/${articleId}`, body, config );
+        const res = await axios.patch(`/articles/remove-comment/${articleId}`, body, config );
         // console.log(res.data);
 
         dispatch({

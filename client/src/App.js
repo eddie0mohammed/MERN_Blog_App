@@ -36,18 +36,21 @@ class App extends React.Component {
     sidebarOpen: false
   }
 
+  async componentDidMount(){
+  const res = await this.props.getUser();
+  if (res.status === 'fail'){
+    localStorage.removeItem('token');
+  }
+    await this.props.getArticles();
+
+  }
+
+
   toggleSidebar = () => {
         this.setState({
             sidebarOpen: !this.state.sidebarOpen
         });
     }
-
-  async componentDidMount(){
-    await this.props.getUser(this.props.token);
-    this.props.getArticles();
-
-
-  }
 
 
   render(){
@@ -101,7 +104,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getUser: (token) => dispatch(authActionCreators.getUser(token)),
+    getUser: () => dispatch(authActionCreators.getUser()),
     getArticles: () => dispatch(articlesActionCreators.getArticles()),
   }
 }

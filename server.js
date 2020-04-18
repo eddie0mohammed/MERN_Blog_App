@@ -17,8 +17,8 @@ const app = express();
 
 
 //DB
-const DB = process.env.DB;
-mongoose.connect(DB, {
+const MONGODB_URI = process.env.MONGODB_URI;
+mongoose.connect(MONGODB_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -47,19 +47,22 @@ app.use(bodyParser.json());
 app.use('/images' , express.static(path.join(__dirname, 'public', 'images')));
 app.use('/profile-pic' , express.static(path.join(__dirname, 'public', 'profilePic')));
 
-if (process.env.NODE_ENV === 'production'){
-    
-    app.use(express.static(path.join(__dirname, 'client', 'build')));
 
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-    })
-}
 
 //ROUTES
 app.use('/auth', authRouter);
 app.use('/articles', articlesRouter);
 
+
+
+if (process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    })
+
+}
 
 
 const PORT = process.env.PORT || 8080;
