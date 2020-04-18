@@ -35,7 +35,7 @@ class MyArticles extends Component {
                 <div key={elem._id} className={styles.block}>
 
                     <div className={styles.imgContainer}>
-                        <img className={styles.img} src={`http://localhost:8080/images/${elem.imageURL}`} alt=""/>
+                        <img className={styles.img} src={`/images/${elem.imageURL}`} alt=""/>
                     </div>
                     
                     <div className={styles.innerBlock}>

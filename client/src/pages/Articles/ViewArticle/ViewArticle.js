@@ -160,7 +160,7 @@ class ViewArticle extends Component {
                 
 
                 <div className={styles.article}>
-                    <img className={styles.image} src={`http://localhost:8080/images/${this.state.imageURL}`} alt=""/>
+                    <img className={styles.image} src={`/images/${this.state.imageURL}`} alt=""/>
 
                     {/* {this.props.isAuthenticated && this.props.user && this.props.user._id === this.state.authorId ?
                     <div className={styles.btns}>
