@@ -25,25 +25,31 @@ const sendMail = async (options) => {
 
     
     // 1. create transporter
-    //MAILTRAP transporter
-    const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        post: process.env.EMAIL_PORT,
-        auth:{
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASS
-        }
-    })
+    let transporter;
+    if (process.env.NODE_ENV === 'development'){
 
-    // //SENDGRID Transporter
-    // const transporter = nodemailer.createTransport({
-    //     host: process.env.SENDGRID_HOST,
-    //     port: process.env.SENDGRID_PORT,
-    //     auth: {
-    //         user: process.env.SENDGRID_USERNAME,
-    //         pass: process.env.SENDGRID_PASSWORD
-    //     }
-    // })
+    
+        //MAILTRAP transporter
+        transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            post: process.env.EMAIL_PORT,
+            auth:{
+                user: process.env.EMAIL_USERNAME,
+                pass: process.env.EMAIL_PASS
+            }
+        })
+    }else{
+
+        // //SENDGRID Transporter
+        transporter = nodemailer.createTransport({
+            host: process.env.SENDGRID_HOST,
+            port: process.env.SENDGRID_PORT,
+            auth: {
+                user: process.env.SENDGRID_USERNAME,
+                pass: process.env.SENDGRID_PASSWORD
+            }
+        })
+    }
 
 
 

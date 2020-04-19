@@ -13,7 +13,7 @@ class Landing extends Component {
                     
                     <div className={styles.message}>
                         <h1 className={styles.title}>Welcome</h1>
-                        <p className={styles.desc}>The purpose of this blog is to document my journey into web development. Feel free to contribute, review and comment on them.</p>
+                        <p className={styles.desc}>The purpose of this blog is to document my journey into a software engineering career. Feel free to contribute, review and comment on them.</p>
 
                     </div>
                 </div>

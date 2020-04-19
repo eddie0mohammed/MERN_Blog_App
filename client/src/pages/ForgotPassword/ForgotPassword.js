@@ -36,7 +36,7 @@ class ForgotPassword extends Component {
         // console.log(this.state);
         await this.props.forgotPassword(email);
 
-        if (this.props.forgotPassword){
+        if (this.props.forgotPassword && !this.props.error){
             this.props.history.push('/auth/confirmForgotPassword');
         }
 
@@ -71,7 +71,7 @@ class ForgotPassword extends Component {
                         //form submitted => what actions to take
                         this.handleSubmitForm(values.email)
     
-                        resetForm();
+                        // resetForm();
                         setSubmitting(false);
                     }}
                     
@@ -86,6 +86,8 @@ class ForgotPassword extends Component {
 
                         <input className={`${styles.input} ${touched.email && errors.email ? `${styles.error}` : '' }`} type="email" name="email" placeholder="Email" value={values.email} onChange={handleChange} onBlur={handleBlur} autoComplete="off"/>
                         <Error touched={touched.email} message={errors.email}/>
+
+                        <p style={{color: 'red', textAlign: 'center'}}>{this.props.error}</p>
                         
                         <input className={styles.submit} type="submit" value="Submit" disabled={isSubmitting}/>
 
@@ -101,6 +103,7 @@ class ForgotPassword extends Component {
 const mapStateToProps = (state) => {
     return {
         forgotPassword: state.auth.forgotPassword,
+        error: state.error.error
     }
 }
 

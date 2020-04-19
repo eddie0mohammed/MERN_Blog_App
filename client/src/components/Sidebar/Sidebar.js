@@ -49,7 +49,7 @@ class Sidebar extends Component {
 
                     <div className={styles.personImg}>
                         {this.props.user && this.props.user.profilePic &&
-                            <img className={styles.img} src={`http://localhost:8080/profile-pic/${this.props.user.profilePic}`} alt=""/>
+                            <img className={styles.img} src={`/profile-pic/${this.props.user.profilePic}`} alt=""/>
                         }
                     </div>
                     <div className={styles.message}>Hi, <span className={styles.name}>{this.props.user && this.props.user.username}</span></div>

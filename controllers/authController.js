@@ -76,10 +76,12 @@ const register = async (req, res, next) => {
          const activationURL = `${req.protocol}://${req.get('host')}/auth/validate/${activationToken}`;
         //message
         // const message = `Click here to activate your profile and login: ${activationURL}`;
+
+
         //send email
         await sendMail({
-            email: 'test@test.com', //mailtrap service
-            // email: req.body.email, //used for production
+            // email: 'test@test.com', //mailtrap service
+             email: req.body.email, //used for production
             // email: 'alperceylan52@gmail.com', //used for testing on gmail
             subject: 'ACCOUNT ACTIVATION EMAIL',
             // message: message,
@@ -200,7 +202,10 @@ const validateAccount = async (req, res, next) => {
         user.activationToken = null,
         await user.save();
 
-        res.redirect('http://localhost:3000/auth/login');    
+        if (process.env.NODE_ENV === 'development'){
+            return res.redirect('http://localhost:3000/auth/login');
+        }
+        res.redirect('/auth/login');    
 
 
     }catch(err){
@@ -281,8 +286,8 @@ const forgotPassword = async (req, res, next) => {
         // const message = `Click here to reset your password: ${passwordResetURL}`;
 
         await sendMail({
-            email: 'test@test.com',
-            // email: req.body.email, // for production
+            // email: 'test@test.com',
+            email: req.body.email, // for production
             subject: 'PASSWORD RESET EMAIL',
             // message: message
             emailType: 'forgotPassword',
@@ -304,7 +309,11 @@ const forgotPassword = async (req, res, next) => {
 const redirectToResetPassword = (req, res, next) => {
 
     const token = req.params.token;
-    res.redirect(`http://localhost:3000/auth/resetPassword/${token}`);
+    if (process.env.NODE_ENV === 'development'){
+        return res.redirect(`http://localhost:3000/auth/resetPassword/${token}`);
+
+    }
+    res.redirect(`/auth/resetPassword/${token}`);
 }
 
 const resetPassword = async (req, res, next) => {
@@ -393,8 +402,6 @@ const resetMyPassword = async (req, res, next) => {
             }
         })
 
-
-
     }catch(err){
         console.log(err);
         res.status(400).json({
@@ -441,10 +448,7 @@ const changePicture = async (req, res, next) => {
             status: 'fail',
             error: err
         });
-
     }
-
-
 }
 
 module.exports = {
