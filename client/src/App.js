@@ -68,7 +68,7 @@ class App extends React.Component {
             <Route path="/auth/register" exact render={(props) => (!this.props.isAuthenticated ? <Register {...props}/> : <Redirect to="/" />)}/>
             <Route path="/auth/login" exact render={(props) => (!this.props.isAuthenticated ? <Login {...props}/> : <Redirect to="/" />)}/>
             <Route path="/auth/forgotPassword" exact component={ForgotPassword}/>
-            <Route path="/auth/resetPassword/:token" exact component={ResetPassword}/>
+            <Route path="/auth/reset-Password/:token" exact component={ResetPassword}/>
             <Route path="/auth/confirmEmail" exact component={SuccessRegistered}/>
             <Route path="/auth/confirmForgotPassword" exact component={ConfirmForgotPassword}/>
             <Route path="/auth/settings" exact render={(props) => this.props.isAuthenticated ? <Settings {...props} /> : <Redirect to='/auth/login' />}/>
