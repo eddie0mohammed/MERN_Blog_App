@@ -313,7 +313,7 @@ const redirectToResetPassword = (req, res, next) => {
         return res.redirect(`http://localhost:3000/auth/resetPassword/${token}`);
 
     }
-    res.redirect(`/auth/resetPassword/${token}`);
+    return res.redirect(`/auth/resetPassword/${token}`);
 }
 
 const resetPassword = async (req, res, next) => {
