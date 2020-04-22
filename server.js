@@ -5,12 +5,20 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
 const dotenv = require('dotenv');
 dotenv.config({path: './config.env'});
 
 const authRouter = require('./routes/auth');
 const articlesRouter = require('./routes/articles');
 
+
+//CLOUDINARY CONFIG
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.CLOUD_API_KEY,
+    api_secret: process.env.CLOUD_API_SECRET
+})
 
 
 const app = express();

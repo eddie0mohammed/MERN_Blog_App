@@ -1,4 +1,6 @@
 
+const cloudinary = require('cloudinary').v2;
+const path = require('path');
 
 const Article = require('../models/article');
 const uploadPhoto = require('../utils/imageUpload');
@@ -54,6 +56,12 @@ const createArticle = async (req, res, next) => {
     }
 
     try{
+        const cloudinaryRes = await cloudinary.uploader.upload(path.join(__dirname, '..', 'public', 'images', req.file.filename));
+        // console.log(cloudinaryRes);
+        if (cloudinaryRes){
+            deleteFile(newArticle.imageURL);
+            newArticle.imageURL = cloudinaryRes.url;
+        }
 
         const temp = await newArticle.save();
         const newlySavedArticle = await Article.findById(temp._id).populate('author');
@@ -122,7 +130,10 @@ const deleteArticle = async (req, res, next) => {
                 error: 'No article found'
             });
         }
-        deleteFile(article.imageURL);
+        // deleteFile(article.imageURL);
+        const public_id_Arr = article.imageURL.split('/');
+        const public_id = public_id_Arr[public_id_Arr.length - 1].split('.')[0];
+        await cloudinary.uploader.destroy(public_id);
 
         await Article.findByIdAndDelete(id);
 
@@ -167,8 +178,22 @@ const updateArticle = async (req, res, next) => {
             body.article = req.body.article;
         }
         if (req.file){
-            deleteFile(article.imageURL);
-            body.imageURL = req.file.filename;
+            // deleteFile(article.imageURL);
+            
+
+            const cloudinaryRes = await cloudinary.uploader.upload(path.join(__dirname, '..', 'public', 'images', req.file.filename));
+            // console.log(cloudinaryRes);
+            if (cloudinaryRes){
+                body.imageURL = cloudinaryRes.url;
+                
+                const public_id_Arr = article.imageURL.split('/');
+                const public_id = public_id_Arr[public_id_Arr.length - 1].split('.')[0];
+                await cloudinary.uploader.destroy(public_id);
+                deleteFile(req.file.filename);
+            }
+            
+
+            // body.imageURL = req.file.filename;
         }
         const updatedArticle = await Article.findByIdAndUpdate(id, body, {new: true, runValidators: true});
 

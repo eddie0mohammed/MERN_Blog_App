@@ -3,6 +3,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const cloudinary = require('cloudinary').v2;
+const path = require('path');
 
 const User = require('../models/user');
 const sendMail = require('../utils/sendMail');
@@ -427,10 +429,25 @@ const changePicture = async (req, res, next) => {
         const body = {};
         //2, check if there is a file
         if (req.file){
-            if (user.profilePic !== '1.jpg'){
-                deleteFile(user.profilePic);
+            // if (user.profilePic !== '1.jpg'){
+            //     deleteFile(user.profilePic);
+            // }
+            // body.profilePic = req.file.filename
+
+
+            const cloudinaryRes = await cloudinary.uploader.upload(path.join(__dirname, '..', 'public', 'profilePic', req.file.filename));
+            // console.log(cloudinaryRes);
+            if (cloudinaryRes){
+                body.profilePic = cloudinaryRes.url;
+                
+                const public_id_Arr = user.profilePic.split('/');
+                const public_id = public_id_Arr[public_id_Arr.length - 1].split('.')[0];
+                if (cloudinaryRes.url !== 'https://res.cloudinary.com/dwnuffg0b/image/upload/v1587586900/1_x0apjw.jpg'){
+                    await cloudinary.uploader.destroy(public_id);
+
+                }
+                deleteFile(req.file.filename);
             }
-            body.profilePic = req.file.filename
         }
 
         const updatedUser = await User.findByIdAndUpdate(req.user.id, body, {new: true, runValidators: true});

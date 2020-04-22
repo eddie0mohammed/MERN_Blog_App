@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
 
     profilePic:{
         type: String,
-        default: '1.jpg'
+        default: 'https://res.cloudinary.com/dwnuffg0b/image/upload/v1587586900/1_x0apjw.jpg'
     } 
 
 
