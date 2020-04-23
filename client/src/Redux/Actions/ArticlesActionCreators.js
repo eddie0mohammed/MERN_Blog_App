@@ -30,7 +30,7 @@ export const addArticle = (title, article, file) => async (dispatch, getState) =
         });
 
     }catch(err){
-        console.log(err);
+        console.log(err.response);
         dispatch({
             type: actionTypes.ERROR_IMG,
             payload: err.response.data.error.message
